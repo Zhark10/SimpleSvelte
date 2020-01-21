@@ -1,13 +1,20 @@
 <script>
-  async function getUserAsync() {
+  let promise = getLuke();
+  
+  async function getLuke() {
     let response = await fetch(`https://swapi.co/api/people/1/`);
     let data = await response.json();
-    return data;
+    return data.name;
   }
-
-  getUserAsync().then(data => console.log(data));
+  function onClick() {
+    promise = getLuke();
+  }
 </script>
 
 <h1>Home</h1>
-<p>Welcome to my website</p>
-
+<button on:click={onClick}>get jedi</button>
+{#await promise}
+  <p>...waiting</p>
+{:then name}
+  <p>Here was {name}</p>
+{/await}
